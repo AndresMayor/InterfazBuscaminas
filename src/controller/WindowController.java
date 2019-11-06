@@ -159,10 +159,9 @@ public class WindowController implements Initializable  {
 		}
 		
 	});
+
 		
-		
-		
-	}
+}
 	
 	
 	
@@ -183,6 +182,7 @@ public class WindowController implements Initializable  {
 		}
 	}
 
+
 @Override
 public void initialize(URL location, ResourceBundle resources) {
 	// TODO Auto-generated method stub
@@ -191,10 +191,54 @@ public void initialize(URL location, ResourceBundle resources) {
 		
 public void destaparButton(Button b1) {
 	
-	
-	b1.setVisible(true);
+		String text = b1.getId();
+		String parts[] = text.split(",");
+		int i = Integer.parseInt(parts[0]);
+		int j = Integer.parseInt(parts[1]);
+		program.abrirCasilla(i, j);
+		b1.setText(program.darCasillas()[i][j].mostrarValorCasilla());
+		b1.setOnAction(e -> {
+		});
+		if (program.darPerdio()) {
+			
+			Alert mina = new Alert(AlertType.ERROR);
+        	mina.setTitle("Fin del juego");
+        	mina.setHeaderText(null);
+        	mina.initStyle(StageStyle.UTILITY);
+        	mina.setContentText("Perdiste abriste una mina");
+        	mina.show();
+        	matrixGP.getChildren().clear();
+   
+			//JOptionPane.showMessageDialog(null, "Perdiste");
+			solucionarBuscaminas();
+		} else if (program.gano()) {
+			Alert mina = new Alert(AlertType.ERROR);
+        	mina.setTitle("Fin del juego");
+        	mina.setHeaderText(null);
+        	mina.initStyle(StageStyle.UTILITY);
+        	mina.setContentText("Ganaste..!!");
+        	mina.show();
+			//JOptionPane.showMessageDialog(null, "ganaste");
+			solucionarBuscaminas();
+		
+
+	}
 
 }
-		
+
+public void solucionarBuscaminas() {
+	program.resolver();
+	matrixGP.getChildren().clear();
+	for (int i = 0; i < program.darCasillas().length; i++) {
+		for (int j = 0; j < program.darCasillas()[0].length; j++) {
+			Button b1 = new Button(program.darCasillas()[i][j].mostrarValorCasilla());
+			
+			matrixGP.add(b1, j, i);
+		}
+	}
+}
+
+
+
 }
 
